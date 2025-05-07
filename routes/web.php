@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Livewire\Auth\Login;
+use App\Livewire\Auth\LoginPage;
+use App\Livewire\Auth\ForgotPasswordPage;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\HistorialStockController;
@@ -10,10 +11,14 @@ use App\Http\Controllers\SubareaInventarioController;
 use App\Http\Controllers\CompraController;
 
 
-Route::get('/login', Login::class)->name('login');
+
+Route::get('/login', LoginPage::class)->name('login');
+Route::get('/forgot-password', ForgotPasswordPage::class)->name('password.request');
+
 Route::get('/', function () {
     return redirect()->route('login');
 });
+
 
 Route::view('/dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])

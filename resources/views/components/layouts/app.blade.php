@@ -2,14 +2,12 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>App</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
 <body class="bg-gray-100 font-sans antialiased">
-    <main class="min-h-screen flex items-center justify-center px-4">
-        {{ $slot }}
-    </main>
+    {{ $slot }}
     @livewireScripts
 </body>
 </html>

@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\Hash;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-#[Layout('layouts.app')] // 👈 Así se define el layout en Livewire 3
-class Login extends Component
+#[Layout('layouts.guest')]
+class LoginPage extends Component
 {
     public $email = '';
     public $password = '';
@@ -26,12 +26,12 @@ class Login extends Component
 
         $user = User::where('email', $this->email)->first();
 
-        if (!$user || !Hash::check($this->password, $user->password)) {
+        if (! $user || ! Hash::check($this->password, $user->password)) {
             $this->addError('email', 'Credenciales incorrectas.');
             return;
         }
 
-        if (!$user->active) {
+        if (! $user->active) {
             $this->addError('email', 'Tu cuenta está desactivada.');
             return;
         }
@@ -43,6 +43,6 @@ class Login extends Component
 
     public function render()
     {
-        return view('livewire.auth.login');
+        return view('livewire.auth.login-page');
     }
 }
