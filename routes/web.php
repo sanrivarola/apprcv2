@@ -1,0 +1,80 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Livewire\Auth\Login;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\HistorialStockController;
+use App\Http\Controllers\AreaInventarioController;
+use App\Http\Controllers\SubareaInventarioController;
+use App\Http\Controllers\CompraController;
+
+
+Route::get('/login', Login::class)->name('login');
+Route::get('/', function () {
+    return redirect()->route('login');
+});
+
+Route::view('/dashboard', 'dashboard')
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
+
+Route::view('profile', 'profile')
+    ->middleware(['auth'])
+    ->name('profile');
+
+Route::prefix('usuarios')->group(function() {
+    Route::get('/', [UserController::class, 'index'])->name('usuarios.index');
+    Route::patch('/{id}/toggle-status', [UserController::class, 'toggleStatus'])->name('usuarios.toggleStatus');
+    Route::get('/create', [UserController::class, 'create'])->name('usuarios.create');
+    Route::post('/', [UserController::class, 'store'])->name('usuarios.store');  Route::get('/{id}/edit', [UserController::class, 'edit'])->name('usuarios.edit');
+    Route::put('/{id}', [UserController::class, 'update'])->name('usuarios.update');
+});
+
+Route::get('/horarios', function () {
+    return view('horarios.index');
+    })->middleware(['auth'])->name('horarios.index');
+
+Route::get('/tareas', function () {
+    return view('tareas.index');
+    })->middleware(['auth'])->name('tareas.index');
+
+Route::get('/mantenimientos', function () {
+    return view('mantenimientos.index');
+    })->middleware(['auth'])->name('mantenimientos.index');   
+
+Route::get('/relevamientos', function () {
+    return view('relevamientos.index');
+    })->middleware(['auth'])->name('relevamientos.index');  
+
+Route::get('/pluviometro', function () {
+    return view('pluviometro.index');
+    })->middleware(['auth'])->name('pluviometro.index');   
+
+Route::get('/inventario', function () {
+    return view('inventario.index');
+    })->middleware(['auth'])->name('inventario.index'); 
+
+// Áreas
+Route::resource('areas', AreaInventarioController::class);
+
+// Subáreas
+Route::get('/subareas/create/{area_id}', [SubareaInventarioController::class, 'create'])->name('subareas.create');
+Route::post('subareas/store', [SubareaInventarioController::class, 'store'])->name('subareas.store');
+Route::get('subareas/{subarea}/edit', [SubareaInventarioController::class, 'edit'])->name('subareas.edit');
+Route::put('subareas/{subarea}', [SubareaInventarioController::class, 'update'])->name('subareas.update');
+Route::delete('subareas/{subarea}', [SubareaInventarioController::class, 'destroy'])->name('subareas.destroy');
+
+Route::get('/compras', function () {
+    return view('compras.index');
+    })->middleware(['auth'])->name('compras.index'); 
+Route::get('compras/create/{producto}', [CompraController::class, 'create'])->name('compras.create');
+Route::post('compras/store/{producto}', [CompraController::class, 'store'])->name('compras.store');
+    
+Route::resource('productos', ProductoController::class);
+
+// Para movimientos de stock
+Route::post('/productos/{producto}/stock/entrada', [HistorialStockController::class, 'entrada'])->name('stock.entrada');
+Route::post('/productos/{producto}/stock/salida', [HistorialStockController::class, 'salida'])->name('stock.salida');
+    
+require __DIR__.'/auth.php';
