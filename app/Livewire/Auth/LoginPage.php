@@ -5,18 +5,14 @@ namespace App\Livewire\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-#[Layout('layouts.guest')]
 class LoginPage extends Component
 {
-    public $email = '';
-    public $password = '';
-    public $remember = false;
+    public $email = '', $password = '', $remember = false;
 
     protected $rules = [
-        'email' => ['required', 'email'],
+        'email'    => ['required', 'email'],
         'password' => ['required'],
     ];
 
@@ -43,6 +39,6 @@ class LoginPage extends Component
 
     public function render()
     {
-        return view('livewire.auth.login-page');
+        return view('livewire.auth.login-page'); // sólo el div raíz con el form
     }
 }

@@ -1,5 +1,5 @@
 @extends('layouts.guest')
 
 @section('content')
-  <livewire:auth.forgot-password-page />
+  <livewire:auth.login-page />
 @endsection

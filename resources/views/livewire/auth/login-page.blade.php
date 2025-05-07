@@ -1,84 +1,69 @@
-<div>
-    <div class="sm:mx-auto sm:w-full sm:max-w-md">
-        <a href="{{ route('dashboard') }}">
-            <x-logo class="w-auto h-16 mx-auto text-indigo-600" />
-        </a>
-
-        <h2 class="mt-6 text-3xl font-extrabold text-center text-gray-900 leading-9">
-            Sign in to your account
-        </h2>
-
-        @if (Route::has('register'))
-            <p class="mt-2 text-sm text-center text-gray-600 leading-5">
-                Or
-                <a href="{{ route('register') }}" class="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150">
-                    create a new account
-                </a>
-            </p>
-        @endif
-    </div>
-
-    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div class="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10">
-            
-            {{-- Mensaje general de error: credenciales incorrectas o cuenta desactivada --}}
-            @error('email')
-                <div class="mb-4 text-sm text-red-600 bg-red-100 border border-red-300 rounded p-3">
-                    {{ $message }}
-                </div>
-            @enderror
-
-            <form wire:submit.prevent="authenticate">
-                <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700">
-                        Email address
-                    </label>
-                    <div class="mt-1">
-                        <input wire:model.lazy="email" id="email" name="email" type="email" required autofocus
-                        class="appearance-none block w-full px-3 py-2 rounded-md placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm 
-                        border @error('email') border-red-500 @else @enderror"
-                        />
-                    </div>
-                </div>
-
-                <div class="mt-6">
-                    <label for="password" class="block text-sm font-medium text-gray-700">
-                        Password
-                    </label>
-                    <div class="mt-1">
-                        <input wire:model.lazy="password" id="password" type="password" required
-                            class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400
-                            focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('password') @enderror" />
-                    </div>
-                    @error('password')
-                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div class="flex items-center justify-between mt-6">
-                    <div class="flex items-center">
-                        <input wire:model.lazy="remember" id="remember" type="checkbox"
-                            class="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out" />
-                        <label for="remember" class="ml-2 block text-sm leading-5 text-gray-900">
-                            Remember me
-                        </label>
-                    </div>
-
-                    <div class="text-sm leading-5">
-                        <a href="{{ route('password.request') }}" class="text-sm text-indigo-600 hover:text-indigo-500">
-                            ¿Olvidaste tu contraseña?
-                        </a>
-                    </div>
-                </div>
-
-                <div class="mt-6">
-                    <button type="submit"
-                        class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white
-                        bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Sign in
-                    </button>
-                </div>
-            </form>
+<div class="relative flex items-center justify-center min-h-screen px-4 bg-[#44803F]">
+    <div class="bg-white bg-opacity-90 p-8 rounded-lg shadow-lg w-full">
+  
+      @if(session('status'))
+        <div class="mb-4 text-sm text-green-700 bg-green-100 px-4 py-2 rounded">
+          {{ session('status') }}
         </div>
+      @endif
+  
+      @error('email')
+        <div class="mb-4 text-sm text-red-700 bg-red-100 px-4 py-2 rounded">
+          {{ $message }}
+        </div>
+      @enderror
+  
+      <form wire:submit.prevent="authenticate" class="space-y-6">
+        <div>
+          <label for="email" class="sr-only">Email</label>
+          <input
+            wire:model.lazy="email"
+            id="email"
+            type="email"
+            required
+            autofocus
+            placeholder="Email"
+            class="block w-full border-b border-gray-300 bg-transparent px-4 py-2 text-gray-900 placeholder-gray-500 focus:outline-none focus:border-[#44803F] text-sm"
+          />
+        </div>
+  
+        <div>
+          <label for="password" class="sr-only">Contraseña</label>
+          <input
+            wire:model.lazy="password"
+            id="password"
+            type="password"
+            required
+            placeholder="Contraseña"
+            class="block w-full border-b border-gray-300 bg-transparent px-4 py-2 text-gray-900 placeholder-gray-500 focus:outline-none focus:border-[#44803F] text-sm"
+          />
+        </div>
+  
+        <div class="flex items-center justify-between text-sm">
+          <label class="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              wire:model.lazy="remember"
+              class="h-4 w-4 text-[#44803F] border-gray-300 focus:ring-[#44803F]"
+            />
+            <span class="text-gray-700 txt-small">Recordarme</span>
+          </label>
+          <a
+            href="{{ route('password.request') }}"
+            class="text-[#44803F] hover:underline"
+          >
+            ¿Olvidaste tu contraseña?
+          </a>
+        </div>
+  
+        <button
+          type="submit"
+          class="w-full py-3 bg-white border border-[#44803F] text-[#44803F] font-medium rounded-md text-sm hover:bg-[#f9fdf9] transition"
+        >
+          Iniciar sesión
+        </button>
+      </form>
+  
     </div>
-</div>
+  </div>
+  

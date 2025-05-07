@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@layer utilities {
+  .bg-login {
+    background-image: url('/images/bg-raracuenca.png');
+    background-repeat: no-repeat;
+    background-color: #44803F;
+    background-position: center;
+    background-size: auto;
+  }
+  .txt-small {
+        font-size: 11px;
+        padding-right: 20px;
+    }
+}

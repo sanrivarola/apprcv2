@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Auth\LoginPage;
 use App\Livewire\Auth\ForgotPasswordPage;
+use App\Http\Controllers\Auth;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\HistorialStockController;
@@ -12,12 +13,11 @@ use App\Http\Controllers\CompraController;
 
 
 
-Route::get('/login', LoginPage::class)->name('login');
-Route::get('/forgot-password', ForgotPasswordPage::class)->name('password.request');
+Route::get('/login', fn() => view('auth.login'))->name('login');
+Route::get('/forgot-password', ForgotPasswordPage::class)
+     ->name('password.request');
 
-Route::get('/', function () {
-    return redirect()->route('login');
-});
+Route::get('/', fn() => redirect()->route('login'));
 
 
 Route::view('/dashboard', 'dashboard')
