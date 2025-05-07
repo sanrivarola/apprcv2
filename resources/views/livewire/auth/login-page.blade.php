@@ -15,14 +15,14 @@
   
       <form wire:submit.prevent="authenticate" class="space-y-6">
         <div>
-          <label for="email" class="sr-only">Email</label>
+          <label for="name" class="sr-only">Nombre de usuario</label>
           <input
-            wire:model.lazy="email"
-            id="email"
-            type="email"
+            wire:model.lazy="name"
+            id="name"
+            type="text"
             required
             autofocus
-            placeholder="Email"
+            placeholder="Nombre de usuario"
             class="block w-full border-b border-gray-300 bg-transparent px-4 py-2 text-gray-900 placeholder-gray-500 focus:outline-none focus:border-[#44803F] text-sm"
           />
         </div>

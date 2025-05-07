@@ -9,10 +9,12 @@ use Livewire\Component;
 
 class LoginPage extends Component
 {
-    public $email = '', $password = '', $remember = false;
+    public $name = '';
+    public $password = '';
+    public $remember = false;
 
     protected $rules = [
-        'email'    => ['required', 'email'],
+        'name'     => ['required', 'string'],
         'password' => ['required'],
     ];
 
@@ -20,15 +22,15 @@ class LoginPage extends Component
     {
         $this->validate();
 
-        $user = User::where('email', $this->email)->first();
+        $user = User::where('name', $this->name)->first();
 
         if (! $user || ! Hash::check($this->password, $user->password)) {
-            $this->addError('email', 'Credenciales incorrectas.');
+            $this->addError('name', 'Credenciales incorrectas.');
             return;
         }
 
         if (! $user->active) {
-            $this->addError('email', 'Tu cuenta está desactivada.');
+            $this->addError('name', 'Tu cuenta está desactivada.');
             return;
         }
 
@@ -39,6 +41,6 @@ class LoginPage extends Component
 
     public function render()
     {
-        return view('livewire.auth.login-page'); // sólo el div raíz con el form
+        return view('livewire.auth.login-page');
     }
 }

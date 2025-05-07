@@ -1,10 +1,11 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use App\Livewire\Auth\LoginPage;
 use App\Livewire\Auth\ForgotPasswordPage;
-use App\Http\Controllers\Auth;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\HorarioController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\HistorialStockController;
 use App\Http\Controllers\AreaInventarioController;
@@ -18,6 +19,13 @@ Route::get('/forgot-password', ForgotPasswordPage::class)
      ->name('password.request');
 
 Route::get('/', fn() => redirect()->route('login'));
+
+Route::post('/logout', function (Request $request) {
+    Auth::logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+    return redirect()->route('login');
+})->name('logout');
 
 
 Route::view('/dashboard', 'dashboard')
@@ -36,9 +44,28 @@ Route::prefix('usuarios')->group(function() {
     Route::put('/{id}', [UserController::class, 'update'])->name('usuarios.update');
 });
 
-Route::get('/horarios', function () {
-    return view('horarios.index');
-    })->middleware(['auth'])->name('horarios.index');
+
+Route::middleware(['auth'])->group(function() {
+    Route::get('/horarios', [HorarioController::class, 'index'])
+         ->name('horarios.index');
+    Route::post('/horarios/entrada', [HorarioController::class, 'entrada'])
+         ->name('horario.entrada');
+    Route::post('/horarios/salida', [HorarioController::class, 'salida'])
+         ->name('horario.salida');
+    Route::get('/horarios/{id}/edit', [HorarioController::class, 'edit'])
+         ->name('horario.edit');
+    Route::put('/horarios/{id}', [HorarioController::class, 'update'])
+         ->name('horario.update');
+    Route::post('/horarios/ausente', [HorarioController::class, 'ausente'])
+         ->name('horario.ausente');
+    Route::get('/horarios/historial', [HorarioController::class, 'history'])
+         ->name('horarios.history');
+    Route::get('/horarios/jornales', [HorarioController::class, 'jornales'])
+         ->name('horarios.jornales');
+    Route::get('/horarios/jornales/export', [HorarioController::class, 'exportJornales'])
+         ->name('horarios.jornales.export');
+});
+
 
 Route::get('/tareas', function () {
     return view('tareas.index');

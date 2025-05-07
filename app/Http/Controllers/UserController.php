@@ -9,7 +9,9 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::all();  // Obtenemos todos los usuarios
+        // Obtener usuarios ordenados por nombre ascendente
+        $users = User::orderBy('name', 'asc')->paginate(25);
+
         return view('usuarios.index', compact('users'));
     }
 
@@ -29,22 +31,21 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        // Validación de los datos
         $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|email|unique:users,email',
             'password' => 'required|string|min:8',
+            'role'     => 'required|in:admin,editor',
         ]);
 
-        // Crear el nuevo usuario
         $data['password'] = bcrypt($data['password']);
-        $data['active'] = true;  // El nuevo usuario está activo por defecto
+        $data['active']   = true;
 
-        User::create($data); // Creamos el usuario
+        User::create($data);
 
-        return redirect()->route('usuarios.index')->with('success', 'Usuario creado exitosamente.');
+        return redirect()->route('usuarios.index')
+                         ->with('success', 'Usuario creado exitosamente.');
     }
-
 
     public function edit($id)
     {
@@ -57,9 +58,10 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|email|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:8', // opcional, solo si se cambia
+            'role'     => 'required|in:admin,editor',
         ]);
 
         if (!empty($data['password'])) {
@@ -72,5 +74,4 @@ class UserController extends Controller
 
         return redirect()->route('usuarios.index')->with('success', 'Usuario actualizado correctamente.');
     }
-
 }

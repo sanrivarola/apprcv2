@@ -11,7 +11,7 @@ class User extends Authenticatable
     use Notifiable;
 
     protected $fillable = [
-        'name', 'email', 'password', 'active',
+        'name', 'email', 'password', 'active', 'role',
     ];
 
     // Definir el mutador para el estado de activación
@@ -24,6 +24,16 @@ class User extends Authenticatable
     public function isActive()
     {
         return $this->active;
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isEditor(): bool
+    {
+        return $this->role === 'editor';
     }
 
     protected $casts = [
